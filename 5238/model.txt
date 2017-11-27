@@ -1,0 +1,81 @@
+model.add(Conv2D(8, (3, 3), input_shape=input_shape, activation='relu'))
+model.add(MaxPooling2D((2, 2)))
+model.add(BatchNormalization())
+model.add(Dropout(rate=0.1))
+model.add(Conv2D(16, (3, 3), activation='relu'))
+model.add(MaxPooling2D((2, 2)))
+model.add(BatchNormalization())
+model.add(Dropout(rate=0.1))
+model.add(Conv2D(16, (3, 3), activation='relu'))
+model.add(BatchNormalization())
+model.add(Dropout(rate=0.1))
+model.add(Conv2D(4, (1, 1), activation='relu'))
+model.add(BatchNormalization())
+model.add(Dropout(rate=0.1))
+model.add(Flatten())
+model.add(Dense(32, activation='relu'))
+model.add(Dropout(rate=0.1))
+model.add(Dense(10, activation='softmax'))
+
+batch_size = 32
+num_epochs = 30
+
+model.summary()
+
+model.compile(loss='categorical_crossentropy',
+              optimizer='adam',
+              metrics=['accuracy'])
+
+
+model.fit(x_train, y_train,
+          batch_size=batch_size, epochs=num_epochs,
+          verbose=1, validation_split=0.1,
+          callbacks=[ModelCheckpoint('mini/weights.{epoch:02d}-{loss:.4f}-{acc:.4f}-{val_loss:.4f}-{val_acc:.4f}.hdf5',
+                                     monitor='loss,acc,val_loss,val_acc')])
+
+
+_________________________________________________________________
+Layer (type)                 Output Shape              Param #   
+=================================================================
+conv2d_60 (Conv2D)           (None, 26, 26, 8)         80        
+_________________________________________________________________
+max_pooling2d_31 (MaxPooling (None, 13, 13, 8)         0         
+_________________________________________________________________
+batch_normalization_60 (Batc (None, 13, 13, 8)         32        
+_________________________________________________________________
+dropout_6 (Dropout)          (None, 13, 13, 8)         0         
+_________________________________________________________________
+conv2d_61 (Conv2D)           (None, 11, 11, 16)        1168      
+_________________________________________________________________
+max_pooling2d_32 (MaxPooling (None, 5, 5, 16)          0         
+_________________________________________________________________
+batch_normalization_61 (Batc (None, 5, 5, 16)          64        
+_________________________________________________________________
+dropout_7 (Dropout)          (None, 5, 5, 16)          0         
+_________________________________________________________________
+conv2d_62 (Conv2D)           (None, 3, 3, 16)          2320      
+_________________________________________________________________
+batch_normalization_62 (Batc (None, 3, 3, 16)          64        
+_________________________________________________________________
+dropout_8 (Dropout)          (None, 3, 3, 16)          0         
+_________________________________________________________________
+conv2d_63 (Conv2D)           (None, 3, 3, 4)           68        
+_________________________________________________________________
+batch_normalization_63 (Batc (None, 3, 3, 4)           16        
+_________________________________________________________________
+dropout_9 (Dropout)          (None, 3, 3, 4)           0         
+_________________________________________________________________
+flatten_16 (Flatten)         (None, 36)                0         
+_________________________________________________________________
+dense_32 (Dense)             (None, 32)                1184      
+_________________________________________________________________
+dropout_10 (Dropout)         (None, 32)                0         
+_________________________________________________________________
+dense_33 (Dense)             (None, 10)                330       
+=================================================================
+Total params: 5,326
+Trainable params: 5,238
+Non-trainable params: 88
+
+Test score:  0.0286468310945
+Test accuracy:  0.9907

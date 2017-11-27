@@ -1,0 +1,61 @@
+model.add(Conv2D(8, (3, 3), input_shape=input_shape, activation='relu'))
+model.add(MaxPooling2D((2, 2)))
+model.add(BatchNormalization())
+model.add(Conv2D(16, (3, 3), activation='relu'))
+model.add(MaxPooling2D((2, 2)))
+model.add(BatchNormalization())
+model.add(Conv2D(16, (3, 3), activation='relu'))
+model.add(BatchNormalization())
+model.add(Conv2D(4, (1, 1), activation='relu'))
+model.add(BatchNormalization())
+model.add(Flatten())
+model.add(Dense(64, activation='relu'))
+model.add(Dense(10, activation='softmax'))
+
+batch_size = 32
+num_epochs = 30
+
+model.summary()
+
+model.compile(loss='categorical_crossentropy',
+              optimizer='adam',
+              metrics=['accuracy'])
+
+
+model.fit(x_train, y_train,
+          batch_size=batch_size, epochs=num_epochs,
+          verbose=1, validation_split=0.1,
+          callbacks=[ModelCheckpoint('mini/weights.{epoch:02d}-{loss:.4f}-{acc:.4f}-{val_loss:.4f}-{val_acc:.4f}.hdf5',
+                                     monitor='loss,acc,val_loss,val_acc')])
+
+Layer (type)                 Output Shape              Param #   
+=================================================================
+conv2d_20 (Conv2D)           (None, 26, 26, 8)         80        
+_________________________________________________________________
+max_pooling2d_11 (MaxPooling (None, 13, 13, 8)         0         
+_________________________________________________________________
+batch_normalization_20 (Batc (None, 13, 13, 8)         32        
+_________________________________________________________________
+conv2d_21 (Conv2D)           (None, 11, 11, 16)        1168      
+_________________________________________________________________
+max_pooling2d_12 (MaxPooling (None, 5, 5, 16)          0         
+_________________________________________________________________
+batch_normalization_21 (Batc (None, 5, 5, 16)          64        
+_________________________________________________________________
+conv2d_22 (Conv2D)           (None, 3, 3, 16)          2320      
+_________________________________________________________________
+batch_normalization_22 (Batc (None, 3, 3, 16)          64        
+_________________________________________________________________
+conv2d_23 (Conv2D)           (None, 3, 3, 4)           68        
+_________________________________________________________________
+batch_normalization_23 (Batc (None, 3, 3, 4)           16        
+_________________________________________________________________
+flatten_6 (Flatten)          (None, 36)                0         
+_________________________________________________________________
+dense_11 (Dense)             (None, 64)                2368      
+_________________________________________________________________
+dense_12 (Dense)             (None, 10)                650       
+=================================================================
+Total params: 6,830
+Trainable params: 6,742
+Non-trainable params: 88
