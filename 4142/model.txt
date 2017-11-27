@@ -1,12 +1,3 @@
-# The minimal neural network that achieves 99% on MNIST
-
-Here I am trying to find out what is the **minimal** model in terms of number of parameters that can achieve **99% accuracy** on **MNIST** dataset.
-
-All sub folders in this repository contains model.txt file with description of a model and hdf5 files with its weights. The subfolder name is the number of trainable parameters of the model.
-
-The record holder at the moment is the CNN with 4,142 parameters, 1x1 convolutions and dropouts:
-
-```python
 model.add(Conv2D(8, (3, 3), input_shape=input_shape, activation='relu'))
 model.add(MaxPooling2D((2, 2)))
 model.add(BatchNormalization())
@@ -44,10 +35,7 @@ model.fit(x_train, y_train,
           callbacks=[ModelCheckpoint('mini/weights.{epoch:02d}-{loss:.4f}-{acc:.4f}-{val_loss:.4f}-{val_acc:.4f}.hdf5',
                                      monitor='loss,acc,val_loss,val_acc')])
 
-```
 
-```
-_________________________________________________________________
 Layer (type)                 Output Shape              Param #   
 =================================================================
 conv2d_116 (Conv2D)          (None, 26, 26, 8)         80        
@@ -94,9 +82,6 @@ Total params: 4,262
 Trainable params: 4,142
 Non-trainable params: 120
 
-```
 
-```
 Test score:  0.0264436473006
 Test accuracy:  0.9917
-```
