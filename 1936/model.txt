@@ -1,12 +1,3 @@
-# The minimal neural network that achieves 99% on MNIST
-
-Here I am trying to find out what is the **minimal** model in terms of number of parameters that can achieve **99% accuracy** on **MNIST** dataset.
-
-All sub folders in this repository contains model.txt file with description of a model and hdf5 files with its weights. The subfolder name is the number of trainable parameters of the model.
-
-The record holder at the moment is the next network:
-
-```python
 def dw_block(sh_l, prev_l):
     l = sh_l(prev_l)
     l = Activation(activation='relu')(l)
@@ -42,30 +33,8 @@ l = Dense(10, activation='softmax')(l)
 
 model = Model(inputs, l)
 
-batch_size = 32
-num_epochs = 75
-
 model.summary()
 
-model.compile(loss='categorical_crossentropy',
-              optimizer='adam',
-              metrics=['accuracy'])
-
-w_path = os.path.join('mini', model.name)
-
-if not os.path.exists(w_path):
-    os.makedirs(w_path)
-
-f_name = os.path.join(w_path, 'weights.{epoch:02d}-{loss:.4f}-{acc:.4f}-{val_loss:.4f}-{val_acc:.4f}.hdf5')
-
-model.fit(x_train, y_train,
-          batch_size=batch_size, epochs=num_epochs,
-          verbose=1, validation_split=0.1,
-          callbacks=[ModelCheckpoint(f_name)])
-
-```
-
-```
 __________________________________________________________________________________________________
 Layer (type)                    Output Shape         Param #     Connected to                     
 ==================================================================================================
@@ -125,9 +94,5 @@ Total params: 1,936
 Trainable params: 1,936
 Non-trainable params: 0
 
-```
-
-```
 Test score:  0.02555989224165678
 Test accuracy:  0.991
-```
